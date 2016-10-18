@@ -1,11 +1,14 @@
 require 'sinatra/base'
+require 'sinatra/partial'
 require 'sqlite3'
 require 'tilt/erubis'
 require 'erubis'
 
 module Suxiv
   class WebApp < Sinatra::Base
+    register Sinatra::Partial
     set :erb, escape_html: true
+    set :partial_template_engine, :erb
     set :public_folder, File.expand_path('../static', __FILE__)
 
     helpers do
