@@ -36,6 +36,9 @@ module Suxiv
 
       erb :index, locals: locals
     end
+
+    get '/images/:image_path' do
+    end
   end
 end
 
