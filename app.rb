@@ -33,7 +33,7 @@ module Suxiv
     end
 
     get '/' do
-      recent_images = db.execute("SELECT filename FROM images ORDER BY created_at DESC LIMIT 10").map { |img|
+      recent_images = db.execute("SELECT filename FROM images ORDER BY created_at DESC LIMIT 20").map { |img|
         File.basename(img["filename"])
       }
 
