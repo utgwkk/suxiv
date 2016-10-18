@@ -13,4 +13,16 @@
 <% else %>
   <h2>「<%= params["q"] %>」 に関連する画像は見つかりませんでした</h2>
 <% end %>
-<%== partial :page, locals: { page: page, images: images } %>
+<div id="page">
+  <% if page > 0 %>
+    <a href="/search?q=<%= params["q"] %>&mode=<%= params["mode"] %>&page=<%= page - 1 %>">&lt;</a>
+  <% else %>
+    &lt;
+  <% end %>
+  <%= page + 1 %>
+  <% if images.size >= 20 %>
+    <a href="/search?q=<%= params["q"] %>&mode=<%= params["mode"] %>&page=<%= page + 1 %>">&gt;</a>
+  <% else %>
+    &gt;
+  <% end %>
+</div>
