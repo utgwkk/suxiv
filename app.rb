@@ -1,4 +1,5 @@
 require 'sinatra/base'
+require 'sqlite3'
 require 'tilt/erubis'
 require 'erubis'
 
