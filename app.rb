@@ -13,6 +13,9 @@ module Suxiv
         @config ||= {
           db: {
             path: "/home/utgw/reimuchan/image.db"
+          },
+          image: {
+            base_path: "/home/utgw/private_html/imgs/"
           }
         }
       end
@@ -38,6 +41,8 @@ module Suxiv
     end
 
     get '/images/:image_path' do
+      content_type 'image/jpeg'
+      File.open(File.join(config[:image][:base_path], params['image_path']), 'rb').read
     end
   end
 end
