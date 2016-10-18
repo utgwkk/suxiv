@@ -112,6 +112,9 @@ WHERE keyword LIKE ?
 GROUP BY filename
 ORDER BY created_at DESC
 SQL
+        if params["q"].size == 0
+          halt 400
+        end
         result = db.execute(query, ["%#{params["q"]}%"])
       end
 
