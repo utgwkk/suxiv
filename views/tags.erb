@@ -2,7 +2,7 @@
 <div>
 <% tags.each do |tag| %>
   <div>
-    <%= tag["content"] %> (<%= tag["num"] %>)
+    <a href="/search?tag=<%= tag["content"] %>"><%= tag["content"] %></a> (<%= tag["num"] %>)
   </div>
 <% end %>
 </div>

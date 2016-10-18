@@ -8,7 +8,9 @@
   <div>
     タグ:
     <% if tags.size > 0 %>
-      <%= tags.join ', ' %>
+      <% tags.each do |tag| %>
+        <a href="/search?tag=<%= tag %>"><%= tag %></a>
+      <% end %>
     <% else %>
       なし
     <% end %>
