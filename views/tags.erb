@@ -1,0 +1,8 @@
+<h2>タグ一覧</h2>
+<div>
+<% tags.each do |tag| %>
+  <div>
+    <%= tag["content"] %> (<%= tag["num"] %>)
+  </div>
+<% end %>
+</div>

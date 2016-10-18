@@ -64,6 +64,12 @@ module Suxiv
 
       erb :detail, locals: {data: data, tags: tags}
     end
+
+    get '/tags' do
+      tags = db.execute("SELECT COUNT(*) AS num, content FROM tags GROUP BY content")
+
+      erb :tags, locals: {tags: tags}
+    end
   end
 end
 
