@@ -4,6 +4,7 @@ h1 {
 
 #recent-images {
   display: flex;
+  flex-wrap: wrap;
 }
 
 #recent-images .image-box {
