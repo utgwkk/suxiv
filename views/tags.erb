@@ -1,8 +1,8 @@
 <h2>タグ一覧</h2>
-<div>
+<ul>
 <% tags.each do |tag| %>
-  <div>
+  <li>
     <a href="/search?tag=<%= tag["content"] %>"><%= tag["content"] %></a> (<%= tag["num"] %>)
-  </div>
+  </li>
 <% end %>
-</div>
+</ul>
