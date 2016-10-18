@@ -15,6 +15,13 @@ module Suxiv
           }
         }
       end
+
+      def db
+        return Thread.current[:suxiv_db] if Thread.current[:suxiv_db]
+        client = SQLite3::Database.new config[:db][:path], results_as_hash: true
+        Thread.current[:suxiv_db] = client
+        client
+      end
     end
 
     get '/' do
