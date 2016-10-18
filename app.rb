@@ -8,6 +8,13 @@ module Suxiv
     set :public_folder, File.expand_path('../static', __FILE__)
 
     helpers do
+      def config
+        @config ||= {
+          db: {
+            path: "/home/utgw/reimuchan/image.db"
+          }
+        }
+      end
     end
 
     get '/' do
