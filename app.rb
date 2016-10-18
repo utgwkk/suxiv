@@ -71,6 +71,25 @@ module Suxiv
       erb :tags, locals: {tags: tags}
     end
 
+    post '/tags/:image_path' do
+      status_id_str = db.execute("SELECT * FROM images WHERE filename LIKE ?", ["%" + params["image_path"]]).map {|img|
+        img["filename"] = File.basename(img["filename"])
+        img
+      }.first["status_id_str"]
+
+      if db.execute("SELECT COUNT(*) FROM tags WHERE content = ? AND status_id_str = ?", [params["content"], status_id_str]).first[0] > 0
+        status 304
+        redirect "/images/detail/#{params["image_path"]}"
+      end
+
+      if db.execute("SELECT COUNT(*) FROM tags WHERE status_id_str = ?", [status_id_str]).first[0] >= 10
+        halt 403
+      end
+
+      db.execute("INSERT INTO tags (content, status_id_str) VALUES (?, ?)", [params["content"], status_id_str])
+      redirect "/images/detail/#{params["image_path"]}"
+    end
+
     get '/search' do
       query = <<SQL
 SELECT images.* FROM tags

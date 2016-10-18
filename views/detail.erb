@@ -14,5 +14,9 @@
     <% else %>
       なし
     <% end %>
+    <form action="/tags/<%= data["filename"] %>" method="POST">
+      <input type="text" name="content">
+      <input type="submit" value="追加">
+    </form>
   </div>
 </div>
