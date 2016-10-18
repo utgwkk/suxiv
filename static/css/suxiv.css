@@ -2,6 +2,10 @@ h1 {
   text-align: center;
 }
 
+#page {
+  text-align: center;
+}
+
 #recent-images {
   display: flex;
   flex-wrap: wrap;

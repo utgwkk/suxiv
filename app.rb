@@ -96,6 +96,9 @@ module Suxiv
     get '/search' do
       result = []
 
+      page = unless params["page"].nil? then params["page"].to_i else 0 end
+      offset = page * 20
+
       if params["mode"] == "tag"
         query = <<SQL
 SELECT images.* FROM tags
@@ -103,26 +106,30 @@ INNER JOIN images
 ON images.status_id_str = tags.status_id_str AND tags.content = ?
 GROUP BY images.filename
 ORDER BY created_at DESC
+LIMIT 20
+OFFSET ?
 SQL
-        result = db.execute(query, [params["q"]])
+        result = db.execute(query, [params["q"], offset])
       else
         query = <<SQL
 SELECT filename FROM images
 WHERE keyword LIKE ?
 GROUP BY filename
 ORDER BY created_at DESC
+LIMIT 20
+OFFSET ?
 SQL
         if params["q"].size == 0
           halt 400
         end
-        result = db.execute(query, ["%#{params["q"]}%"])
+        result = db.execute(query, ["%#{params["q"]}%", offset])
       end
 
       result.map! { |img|
         File.basename(img["filename"])
       }
 
-      erb :search, locals: {images: result}
+      erb :search, locals: {images: result, page: page}
     end
   end
 end
