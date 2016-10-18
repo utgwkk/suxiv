@@ -121,7 +121,7 @@ SQL
       page = unless params["page"].nil? then params["page"].to_i else 0 end
       offset = page * 20
 
-      if params["q"].size == 0
+      if params["q"].nil? || params["q"].empty?
         halt 400
       end
 
