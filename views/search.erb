@@ -1,10 +1,14 @@
-<h2>「<%= params["tag"] %>」 の検索結果</h2>
-<div id="recent-images">
-  <% images.each do |image| %>
-    <div class="image-box">
-      <a href="/images/detail/<%= image %>">
-      <img src="/images/<%= image %>?thumbnail=1">
-      </a>
-    </div>
-  <% end %>
-</div>
+<% if images.size > 0 %>
+  <h2>「<%= params["tag"] %>」 の検索結果</h2>
+  <div id="recent-images">
+    <% images.each do |image| %>
+      <div class="image-box">
+        <a href="/images/detail/<%= image %>">
+        <img src="/images/<%= image %>?thumbnail=1">
+        </a>
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <h2>「<%= params["tag"] %>」 をタグに持つ画像は見つかりませんでした</h2>
+<% end %>
