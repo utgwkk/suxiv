@@ -1,5 +1,5 @@
 <h2>Search</h2>
-<%== partial(:search_form) %>
+<%== partial :search_form, locals: { query: "", mode: "tag" } %>
 <h2>Recent <%= recent_images.size %> images</h2>
 <div id="recent-images">
   <% recent_images.each do |image| %>

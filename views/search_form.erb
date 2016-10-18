@@ -1,7 +1,12 @@
 <form action="/search" method="GET">
-  <input type="text" name="q" size="10">
-  <input type="radio" name="mode" value="tag">タグ
-  <input type="radio" name="mode" value="keyword">キーワード
+  <input type="text" name="q" value="<%= query %>" size="10">
+  <% if mode == "tag" %>
+    <input type="radio" name="mode" value="tag" checked>タグ
+    <input type="radio" name="mode" value="keyword">キーワード
+  <% else %>
+    <input type="radio" name="mode" value="tag">タグ
+    <input type="radio" name="mode" value="keyword" checked>キーワード
+  <% end %>
   <input type="submit" value="検索">
 </form>
 
