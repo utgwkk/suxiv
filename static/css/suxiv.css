@@ -10,5 +10,8 @@ h1 {
   width: 140px;
   height: 140px;
   padding: 5px;
+}
+
+.image-box {
   text-align: center;
 }
