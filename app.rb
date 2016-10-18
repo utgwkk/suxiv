@@ -15,7 +15,8 @@ module Suxiv
             path: "/home/utgw/reimuchan/image.db"
           },
           image: {
-            base_path: "/home/utgw/private_html/imgs/"
+            base_path: "/home/utgw/private_html/imgs/",
+            thumbnail_path: "/home/utgw/private_html/thumbnails/"
           }
         }
       end
@@ -42,7 +43,11 @@ module Suxiv
 
     get '/images/:image_path' do
       content_type 'image/jpeg'
-      File.open(File.join(config[:image][:base_path], params['image_path']), 'rb').read
+      if params['thumbnail']
+        File.open(File.join(config[:image][:thumbnail_path], params['image_path']), 'rb').read
+      else
+        File.open(File.join(config[:image][:base_path], params['image_path']), 'rb').read
+      end
     end
   end
 end
