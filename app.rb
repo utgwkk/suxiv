@@ -83,7 +83,7 @@ SQL
 
       status_id_str = data["status_id_str"]
 
-      tags = db.execute("SELECT content FROM tags WHERE status_id_str = ?", [status_id_str]).map {|tag|
+      tags = db.execute("SELECT content, COUNT(*) AS num FROM tags WHERE status_id_str = ? GROUP BY content ORDER BY num DESC", [status_id_str]).map {|tag|
         tag["content"]
       }
 
