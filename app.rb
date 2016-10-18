@@ -95,7 +95,7 @@ SQL
     end
 
     get '/tags' do
-      tags = db.execute("SELECT COUNT(*) AS num, content FROM tags GROUP BY content")
+      tags = db.execute("SELECT COUNT(*) AS num, content FROM tags GROUP BY content ORDER BY num DESC")
 
       erb :tags, locals: {tags: tags}
     end
