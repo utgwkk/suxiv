@@ -7,6 +7,9 @@ module Suxiv
     set :erb, escape_html: true
     set :public_folder, File.expand_path('../static', __FILE__)
 
+    helpers do
+    end
+
     get '/' do
       erb :index
     end
