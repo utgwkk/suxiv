@@ -8,7 +8,7 @@ module Suxiv
     set :public_folder, File.expand_path('../static', __FILE__)
 
     get '/' do
-      'Hello, world!'
+      erb :index
     end
   end
 end
