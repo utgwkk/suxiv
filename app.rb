@@ -26,7 +26,15 @@ module Suxiv
     end
 
     get '/' do
-      erb :index
+      recent_images = db.execute("SELECT filename FROM images ORDER BY created_at DESC LIMIT 10").map { |img|
+        File.basename(img["filename"])
+      }
+
+      locals = {
+        recent_images: recent_images
+      }
+
+      erb :index, locals: locals
     end
   end
 end

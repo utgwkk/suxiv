@@ -1,1 +1,8 @@
-Yo
+<h2>Recent <%= recent_images.size %> images</h2>
+<div id="recent-images">
+  <% recent_images.each do |image| %>
+    <div class="image-box">
+      <img src="/images/<%= image %>">
+    </div>
+  <% end %>
+</div>
