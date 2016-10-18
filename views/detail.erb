@@ -1,0 +1,13 @@
+<div>
+  <div id="image-container">
+    <img src="/images/<%= data["filename"] %>">
+  </div>
+  <div>
+    タグ:
+    <% if tags.size > 0 %>
+      <%= tags.join ', ' %>
+    <% else %>
+      なし
+    <% end %>
+  </div>
+</div>

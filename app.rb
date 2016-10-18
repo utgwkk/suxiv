@@ -49,6 +49,21 @@ module Suxiv
         File.open(File.join(config[:image][:base_path], params['image_path']), 'rb').read
       end
     end
+
+    get '/images/detail/:image_path' do
+      data = db.execute("SELECT * FROM images WHERE filename LIKE ?", ["%" + params["image_path"]]).map {|img|
+        img["filename"] = File.basename(img["filename"])
+        img
+      }.first
+
+      status_id_str = data["status_id_str"]
+
+      tags = db.execute("SELECT content FROM tags WHERE status_id_str = ?", [status_id_str]).map {|tag|
+        tag["content"]
+      }
+
+      erb :detail, locals: {data: data, tags: tags}
+    end
   end
 end
 
