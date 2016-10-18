@@ -30,6 +30,10 @@ module Suxiv
         Thread.current[:suxiv_db] = client
         client
       end
+
+      def is_valid_tag? tag
+        !tag.empty? && tag.size < 32
+      end
     end
 
     get '/' do
@@ -97,12 +101,18 @@ SQL
     end
 
     post '/tags/:image_path' do
+      tag = params["content"] || ""
+
+      unless is_valid_tag? tag
+        halt 400
+      end
+
       status_id_str = db.execute("SELECT * FROM images WHERE filename LIKE ?", ["%" + params["image_path"]]).map {|img|
         img["filename"] = File.basename(img["filename"])
         img
       }.first["status_id_str"]
 
-      if db.execute("SELECT COUNT(*) FROM tags WHERE content = ? AND status_id_str = ?", [params["content"], status_id_str]).first[0] > 0
+      if db.execute("SELECT COUNT(*) FROM tags WHERE content = ? AND status_id_str = ?", [tag, status_id_str]).first[0] > 0
         status 304
         redirect "/images/detail/#{params["image_path"]}"
       end
@@ -111,7 +121,7 @@ SQL
         halt 403
       end
 
-      db.execute("INSERT INTO tags (content, status_id_str) VALUES (?, ?)", [params["content"], status_id_str])
+      db.execute("INSERT INTO tags (content, status_id_str) VALUES (?, ?)", [tag, status_id_str])
       redirect "/images/detail/#{params["image_path"]}"
     end
 
