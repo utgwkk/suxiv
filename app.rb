@@ -99,6 +99,10 @@ module Suxiv
       page = unless params["page"].nil? then params["page"].to_i else 0 end
       offset = page * 20
 
+      if params["q"].size == 0
+        halt 400
+      end
+
       if params["mode"] == "tag"
         query = <<SQL
 SELECT images.* FROM tags
@@ -119,9 +123,6 @@ ORDER BY created_at DESC
 LIMIT 20
 OFFSET ?
 SQL
-        if params["q"].size == 0
-          halt 400
-        end
         result = db.execute(query, ["%#{params["q"]}%", offset])
       end
 
