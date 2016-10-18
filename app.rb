@@ -70,6 +70,20 @@ module Suxiv
 
       erb :tags, locals: {tags: tags}
     end
+
+    get '/search' do
+      query = <<SQL
+SELECT images.* FROM tags
+INNER JOIN images
+ON images.status_id_str = tags.status_id_str AND tags.content = ?
+ORDER BY created_at DESC
+SQL
+      result = db.execute(query, [params["tag"]]).map { |img|
+        File.basename(img["filename"])
+      }
+
+      erb :search, locals: {images: result}
+    end
   end
 end
 
