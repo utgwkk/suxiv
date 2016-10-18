@@ -44,6 +44,28 @@ module Suxiv
       erb :index, locals: locals
     end
 
+    get '/images/all' do
+      result = []
+
+      page = unless params["page"].nil? then params["page"].to_i else 0 end
+      offset = page * 20
+
+      query = <<SQL
+SELECT filename FROM images
+GROUP BY filename
+ORDER BY created_at DESC
+LIMIT 20
+OFFSET ?
+SQL
+      result = db.execute(query, [offset])
+
+      result.map! { |img|
+        File.basename(img["filename"])
+      }
+
+      erb :all_images, locals: {images: result, page: page}
+    end
+
     get '/images/:image_path' do
       content_type 'image/jpeg'
       if params['thumbnail']

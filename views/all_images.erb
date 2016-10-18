@@ -1,0 +1,24 @@
+<%== partial :search_form, locals: { query: params["q"], mode: params["mode"] } %>
+<h2>全ての画像</h2>
+<div id="recent-images">
+  <% images.each do |image| %>
+    <div class="image-box">
+      <a href="/images/detail/<%= image %>">
+      <img src="/images/<%= image %>?thumbnail=1">
+      </a>
+    </div>
+  <% end %>
+</div>
+<div id="page">
+  <% if page > 0 %>
+    <a href="/images/all?page=<%= page - 1 %>">&lt;</a>
+  <% else %>
+    &lt;
+  <% end %>
+  <%= page + 1 %>
+  <% if images.size >= 20 %>
+    <a href="/images/all?page=<%= page + 1 %>">&gt;</a>
+  <% else %>
+    &gt;
+  <% end %>
+</div>
