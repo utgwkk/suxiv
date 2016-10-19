@@ -96,6 +96,8 @@ SQL
     end
 
     get '/images/:image_path' do
+      last_modified Time.local(2000, 1, 1)
+
       content_type 'image/jpeg'
       if params['thumbnail']
         File.open(image_path(params['image_path'], :thumbnail), 'rb').read
