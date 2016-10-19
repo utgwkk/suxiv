@@ -13,7 +13,7 @@
         <li>
           <a href="/search?q=<%= CGI.escape tag["content"] %>&mode=tag"><%= tag["content"] %></a>
           <form action="/tags/delete/<%= data["filename"] %>" method="POST">
-            <input type="hidden" name="content" value="<%= tag %>">
+            <input type="hidden" name="content" value="<%= tag["content"] %>">
             <input type="submit" value="削除">
           </form>
         </li>
