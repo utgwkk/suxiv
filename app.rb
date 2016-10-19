@@ -152,9 +152,9 @@ SQL
 
       if params["mode"] == "tag"
         query = <<SQL
-SELECT images.* FROM tags
-INNER JOIN images
-ON images.status_id_str = tags.status_id_str AND tags.content = ?
+SELECT images.* FROM images, tags
+WHERE images.status_id_str = tags.status_id_str
+AND tags.content = ?
 GROUP BY images.filename
 ORDER BY created_at DESC
 LIMIT 20
