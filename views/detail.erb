@@ -11,7 +11,7 @@
     <% if tags.size > 0 %>
       <% tags.each do |tag| %>
         <li>
-          <a href="/search?q=<%= tag %>&mode=tag"><%= tag %></a>
+          <a href="/search?q=<%= CGI.escape tag %>&mode=tag"><%= tag %></a>
           <form action="/tags/delete/<%= data["filename"] %>" method="POST">
             <input type="hidden" name="content" value="<%= tag %>">
             <input type="submit" value="削除">
