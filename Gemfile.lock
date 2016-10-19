@@ -1,10 +1,17 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    debugger-ruby_core_source (1.3.8)
     erubis (2.7.0)
     rack (1.6.4)
+    rack-lineprof (0.0.3)
+      rack (~> 1.5)
+      rblineprof (~> 0.3.6)
+      term-ansicolor (~> 1.3)
     rack-protection (1.5.3)
       rack
+    rblineprof (0.3.7)
+      debugger-ruby_core_source (~> 1.3)
     sinatra (1.4.7)
       rack (~> 1.5)
       rack-protection (~> 1.4)
@@ -12,13 +19,17 @@ GEM
     sinatra-partial (1.0.0)
       sinatra (~> 1.4)
     sqlite3 (1.3.12)
+    term-ansicolor (1.4.0)
+      tins (~> 1.0)
     tilt (2.0.5)
+    tins (1.12.0)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   erubis
+  rack-lineprof
   sinatra
   sinatra-partial
   sqlite3

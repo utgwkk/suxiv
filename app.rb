@@ -7,6 +7,12 @@ require 'erubis'
 module Suxiv
   class WebApp < Sinatra::Base
     register Sinatra::Partial
+
+    if ENV["USE_LINEPROF"]
+      require 'rack-lineprof'
+      use Rack::Lineprof, profile: 'app.rb'
+    end
+
     set :erb, escape_html: true
     set :partial_template_engine, :erb
     set :public_folder, File.expand_path('../static', __FILE__)
