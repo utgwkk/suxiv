@@ -125,6 +125,15 @@ SQL
       redirect "/images/detail/#{params["image_path"]}"
     end
 
+    post '/tags/delete/:image_path' do
+      tag = params["content"] || ""
+
+      status_id_str = db.execute("SELECT status_id_str FROM images WHERE filename LIKE ?", ["%" + params["image_path"]]).first["status_id_str"]
+
+      db.execute("DELETE FROM tags WHERE status_id_str = ? AND content = ?", [status_id_str, tag])
+      redirect "/images/detail/#{params["image_path"]}"
+    end
+
     get '/search' do
       result = []
 
