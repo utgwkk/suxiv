@@ -150,17 +150,19 @@ SQL
         halt 400
       end
 
+      tags = params["q"].split
+
       if params["mode"] == "tag"
         query = <<SQL
 SELECT images.* FROM images, tags
 WHERE images.status_id_str = tags.status_id_str
-AND tags.content = ?
+AND (tags.content IN (#{(['?'] * tags.size).join ', '}))
 GROUP BY images.filename
 ORDER BY created_at DESC
 LIMIT 20
 OFFSET ?
 SQL
-        result = db.execute(query, [params["q"], offset])
+        result = db.execute(query, [*tags, offset])
       else
         query = <<SQL
 SELECT filename FROM images
