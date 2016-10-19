@@ -24,8 +24,8 @@ module Suxiv
             path: "/home/utgw/reimuchan/image.db"
           },
           image: {
-            base_path: "/home/utgw/private_html/imgs/",
-            thumbnail_path: "/home/utgw/private_html/thumbnails/"
+            full: "/home/utgw/private_html/imgs/",
+            thumbnail: "/home/utgw/private_html/thumbnails/"
           }
         }
       end
