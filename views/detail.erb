@@ -6,14 +6,22 @@
     <%= data["keyword"] %>
   </div>
   <div>
-    タグ:
+    <h3>タグ</h3>
+    <ul>
     <% if tags.size > 0 %>
       <% tags.each do |tag| %>
-        <a href="/search?tag=<%= tag %>"><%= tag %></a>
+        <li>
+          <a href="/search?q=<%= tag %>&mode=tag"><%= tag %></a>
+          <form action="/tags/delete/<%= data["filename"] %>" method="POST">
+            <input type="hidden" name="content" value="<%= tag %>">
+            <input type="submit" value="削除">
+          </form>
+        </li>
       <% end %>
     <% else %>
-      なし
+      <li>なし</li>
     <% end %>
+    </ul>
     <form action="/tags/<%= data["filename"] %>" method="POST">
       <input type="text" name="content">
       <input type="submit" value="追加">
