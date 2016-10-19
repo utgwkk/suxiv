@@ -43,8 +43,8 @@ module Suxiv
     end
 
     get '/' do
-      recent_images = db.execute("SELECT filename FROM images ORDER BY created_at DESC LIMIT 20").map { |img|
-        File.basename(img["filename"])
+      recent_images = db.execute("SELECT SUBSTR(filename, LENGTH('#{config[:image][:base_path]}') + 1) AS filename FROM images ORDER BY created_at DESC LIMIT 20").map { |img|
+        img["filename"]
       }
 
       locals = {
@@ -61,7 +61,7 @@ module Suxiv
       offset = page * 20
 
       query = <<SQL
-SELECT filename FROM images
+SELECT SUBSTR(filename, LENGTH('#{config[:image][:base_path]}') + 1) AS filename FROM images
 GROUP BY filename
 ORDER BY created_at DESC
 LIMIT 20
@@ -70,7 +70,7 @@ SQL
       result = db.execute(query, [offset])
 
       result.map! { |img|
-        File.basename(img["filename"])
+        img["filename"]
       }
 
       erb :all_images, locals: {images: result, page: page}
@@ -86,8 +86,8 @@ SQL
     end
 
     get '/images/detail/:image_path' do
-      data = db.execute("SELECT filename, keyword FROM images WHERE filename LIKE ?", ["%" + params["image_path"]]).map {|img|
-        img["filename"] = File.basename(img["filename"])
+      data = db.execute("SELECT filename, keyword, status_id_str FROM images WHERE filename = ?", [File.join(config[:image][:base_path], params["image_path"])]).map {|img|
+        img["filename"] = params["image_path"]
         img
       }.first
 
@@ -113,10 +113,7 @@ SQL
         halt 400
       end
 
-      status_id_str = db.execute("SELECT * FROM images WHERE filename LIKE ?", ["%" + params["image_path"]]).map {|img|
-        img["filename"] = File.basename(img["filename"])
-        img
-      }.first["status_id_str"]
+      status_id_str = db.execute("SELECT * FROM images WHERE filename = ?", [File.join(config[:image][:base_path], params["image_path"])]).first["status_id_str"]
 
       if db.execute("SELECT COUNT(*) FROM tags WHERE content = ? AND status_id_str = ?", [tag, status_id_str]).first[0] > 0
         status 304
@@ -134,7 +131,7 @@ SQL
     post '/tags/delete/:image_path' do
       tag = params["content"] || ""
 
-      status_id_str = db.execute("SELECT status_id_str FROM images WHERE filename LIKE ?", ["%" + params["image_path"]]).first["status_id_str"]
+      status_id_str = db.execute("SELECT status_id_str FROM images WHERE filename = ?", [File.join(config[:image][:base_path], params["image_path"])]).first["status_id_str"]
 
       db.execute("DELETE FROM tags WHERE status_id_str = ? AND content = ?", [status_id_str, tag])
       redirect "/images/detail/#{params["image_path"]}"
@@ -165,7 +162,7 @@ SQL
         result = db.execute(query, [*tags, offset])
       else
         query = <<SQL
-SELECT filename FROM images
+SELECT SUBSTR(filename, LENGTH('#{config[:image][:base_path]}') + 1) AS filename FROM images
 WHERE keyword LIKE ?
 GROUP BY filename
 ORDER BY created_at DESC
@@ -176,7 +173,7 @@ SQL
       end
 
       result.map! { |img|
-        File.basename(img["filename"])
+        img["filename"]
       }
 
       erb :search, locals: {images: result, page: page}
