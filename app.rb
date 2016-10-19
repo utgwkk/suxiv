@@ -74,6 +74,27 @@ SQL
       erb :all_images, locals: {images: result, page: page}
     end
 
+    get '/images/without_tag' do
+      result = []
+
+      page = unless params["page"].nil? then params["page"].to_i else 0 end
+      offset = page * 20
+
+      query = <<SQL
+SELECT SUBSTR(filename, LENGTH('#{config[:image][:full]}') + 1) AS filename FROM images
+WHERE images.status_id_str NOT IN (
+  SELECT status_id_str FROM tags
+)
+GROUP BY filename
+ORDER BY created_at DESC
+LIMIT 20
+OFFSET ?
+SQL
+      result = db.execute(query, [offset])
+
+      erb :images_without_tag, locals: {images: result, page: page}
+    end
+
     get '/images/:image_path' do
       content_type 'image/jpeg'
       if params['thumbnail']
