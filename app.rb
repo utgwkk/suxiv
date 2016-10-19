@@ -86,7 +86,7 @@ SQL
     end
 
     get '/images/detail/:image_path' do
-      data = db.execute("SELECT * FROM images WHERE filename LIKE ?", ["%" + params["image_path"]]).map {|img|
+      data = db.execute("SELECT filename, keyword FROM images WHERE filename LIKE ?", ["%" + params["image_path"]]).map {|img|
         img["filename"] = File.basename(img["filename"])
         img
       }.first
