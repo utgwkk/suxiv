@@ -3,8 +3,8 @@
 <div id="recent-images">
   <% images.each do |image| %>
     <div class="image-box">
-      <a href="/images/detail/<%= image %>">
-      <img src="/images/<%= image %>?thumbnail=1">
+      <a href="/images/detail/<%= image["filename"] %>">
+      <img src="/images/<%= image["filename"] %>?thumbnail=1">
       </a>
     </div>
   <% end %>

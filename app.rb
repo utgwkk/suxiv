@@ -47,9 +47,7 @@ module Suxiv
     end
 
     get '/' do
-      recent_images = db.execute("SELECT SUBSTR(filename, LENGTH('#{config[:image][:full]}') + 1) AS filename FROM images ORDER BY created_at DESC LIMIT 20").map { |img|
-        img["filename"]
-      }
+      recent_images = db.execute("SELECT SUBSTR(filename, LENGTH('#{config[:image][:full]}') + 1) AS filename FROM images ORDER BY created_at DESC LIMIT 20")
 
       locals = {
         recent_images: recent_images
@@ -73,10 +71,6 @@ OFFSET ?
 SQL
       result = db.execute(query, [offset])
 
-      result.map! { |img|
-        img["filename"]
-      }
-
       erb :all_images, locals: {images: result, page: page}
     end
 
@@ -94,9 +88,7 @@ SQL
 
       status_id_str = data["status_id_str"]
 
-      tags = db.execute("SELECT content, COUNT(*) AS num FROM tags WHERE status_id_str = ? GROUP BY content ORDER BY num DESC", [status_id_str]).map {|tag|
-        tag["content"]
-      }
+      tags = db.execute("SELECT content, COUNT(*) AS num FROM tags WHERE status_id_str = ? GROUP BY content ORDER BY num DESC", [status_id_str])
 
       erb :detail, locals: {data: data, tags: tags}
     end
@@ -152,7 +144,7 @@ SQL
 
       if params["mode"] == "tag"
         query = <<SQL
-SELECT images.* FROM images, tags
+SELECT SUBSTR(images.filename, LENGTH('#{config[:image][:full]}') + 1) AS filename FROM images, tags
 WHERE images.status_id_str = tags.status_id_str
 AND (tags.content IN (#{(['?'] * tags.size).join ', '}))
 GROUP BY images.filename
@@ -172,10 +164,6 @@ OFFSET ?
 SQL
         result = db.execute(query, ["%#{params["q"]}%", offset])
       end
-
-      result.map! { |img|
-        img["filename"]
-      }
 
       erb :search, locals: {images: result, page: page}
     end
